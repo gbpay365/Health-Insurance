@@ -1,9 +1,0 @@
-{
-  "name": "zhims-platform",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "node -e \"const fs=require('fs'); if(fs.existsSync('client')) process.chdir('client'); require('child_process').execSync('npm install && npm run build', {stdio:'inherit'})\"",
-    "start": "node -e \"const fs=require('fs'); if(fs.existsSync('client')) process.chdir('client'); require('child_process').execSync('npm run start', {stdio:'inherit'})\""
-  }
-}
