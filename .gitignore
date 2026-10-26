@@ -2,10 +2,10 @@
 node_modules/
 */node_modules/
 
-# Production Build
-dist/
-build/
-*/dist/
+# Production Build (tracked for deterministic static deploys)
+# dist/
+# build/
+# */dist/
 
 # Environment Variables
 .env

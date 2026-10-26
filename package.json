@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm --prefix client install && npm --prefix client run build",
-    "start": "npm --prefix client run preview -- --host 0.0.0.0 --port $PORT"
+    "build": "node -e \"const fs=require('fs'); if(fs.existsSync('client')) process.chdir('client'); require('child_process').execSync('npm install && npm run build', {stdio:'inherit'})\"",
+    "start": "node -e \"const fs=require('fs'); if(fs.existsSync('client')) process.chdir('client'); require('child_process').execSync('npm run start', {stdio:'inherit'})\""
   }
 }
