@@ -158,6 +158,8 @@ export default function App() {
   const [rememberMe, setRememberMe] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const [loginLoading, setLoginLoading] = useState(false);
+  const [loginInfoTab, setLoginInfoTab] = useState('portals');
+  const [loginModal, setLoginModal] = useState(null);
 
   const demoRoles = [
     {
@@ -219,6 +221,104 @@ export default function App() {
       badge: 'NIN Verified',
       color: '#0891b2',
       icon: User
+    }
+  ];
+
+  const ZAMFARA_LGAS = [
+    { name: 'Gusau', type: 'State Capital HQ', phcs: 18, hospital: 'FMC Gusau + Gen. Hospital' },
+    { name: 'Anka', type: 'Rural Mining Ward', phcs: 12, hospital: 'Anka General Hospital' },
+    { name: 'Bakura', type: 'Agricultural Hub', phcs: 10, hospital: 'Bakura Cottage Hospital' },
+    { name: 'Birnin Magaji', type: 'Northern Sector', phcs: 9, hospital: 'B. Magaji Comprehensive PHC' },
+    { name: 'Bukkuyum', type: 'Agrarian Basin', phcs: 11, hospital: 'Bukkuyum Rural Hospital' },
+    { name: 'Bungudu', type: 'Sub-Metropolitan', phcs: 14, hospital: 'Bungudu General Hospital' },
+    { name: 'Gummi', type: 'Commercial Riverine', phcs: 13, hospital: 'Gummi General Hospital' },
+    { name: 'Kaura Namoda', type: 'Urban Commercial', phcs: 15, hospital: 'Kaura General Hospital' },
+    { name: 'Maradun', type: 'Irrigation Sector', phcs: 11, hospital: 'Maradun Cottage Hospital' },
+    { name: 'Maru', type: 'Highland Wards', phcs: 12, hospital: 'Maru Cottage Hospital' },
+    { name: 'Shinkafi', type: 'Frontier Sector', phcs: 10, hospital: 'Shinkafi General Hospital' },
+    { name: 'Talata Mafara', type: 'Academic City', phcs: 14, hospital: 'Mafara Specialist Hospital' },
+    { name: 'Tsafe', type: 'Southern Gateway', phcs: 13, hospital: 'Tsafe General Hospital' },
+    { name: 'Zurmi', type: 'Northern Border', phcs: 12, hospital: 'Zurmi Cottage Hospital' }
+  ];
+
+  const ZAMCHEMA_SCHEMES = [
+    {
+      id: 'formal',
+      titleEn: 'Formal Sector Public Plan',
+      titleHa: 'Inshorar Ma’aikatan Gwamnati',
+      targetEn: 'State & LGA Civil Servants, Parastatals',
+      targetHa: 'Ma’aikatan Jiha da Kananan Hukumomi',
+      costEn: 'Statutory Payroll Contribution',
+      costHa: 'Cirewa ta Halastacciyar Albashi',
+      highlightEn: 'Comprehensive secondary & tertiary surgical coverage at FMC Gusau',
+      highlightHa: 'Cikakkiyar kulawa harda tiyata a babban asibitin FMC Gusau',
+      color: '#059669',
+      badge: 'Public Sector'
+    },
+    {
+      id: 'informal',
+      titleEn: 'Informal Sector Micro-Savings',
+      titleHa: 'Inshorar Masu Karamin Karfi da Yan Kasuwa',
+      targetEn: 'Traders, Farmers, Artisans, Transport Unions',
+      targetHa: 'Yan Kasuwa, Manoma, Makera, Direbobi',
+      costEn: '₦12,000 / year (or ₦1,000 / month via USSD)',
+      costHa: '₦12,000 a shekara (ko ₦1,000 a wata)',
+      highlightEn: 'Instant USSD *966# wallet savings with airtime & nutrition reward vouchers',
+      highlightHa: 'Biya cikin sauki ta *966# tare da samun katin waya da tallafin abinci',
+      color: '#2563eb',
+      badge: 'Micro-Savings'
+    },
+    {
+      id: 'bhcpf',
+      titleEn: 'BHCPF Vulnerable Group Fund',
+      titleHa: 'Asusun Tallafin Masu Karamin Karfi (BHCPF)',
+      targetEn: 'Pregnant Women, Under-5s, Indigent Elderly, Disabilities',
+      targetHa: 'Mata masu juna biyu, Yara kasa da 5, Tsofaffi, Nakasassu',
+      costEn: '100% Free / Federal & State Subsidized',
+      costHa: 'Kyauta 100% / Tallafin Jiha da Tarayya',
+      highlightEn: 'Free antenatal care, safe facility childbirth, and primary medication',
+      highlightHa: 'Awon ciki, haihuwa a asibiti, da magunguna kyauta',
+      color: '#d97706',
+      badge: '100% Free Subsidized'
+    },
+    {
+      id: 'students',
+      titleEn: 'Tertiary Students Health Cover',
+      titleHa: 'Inshorar Dalibai ta Manyan Makarantu',
+      targetEn: 'Polytechnics, Universities & Nursing Colleges in Zamfara',
+      targetHa: 'Daliban Jami’o’i, Kwalejoji da Makarantun Ungozoma',
+      costEn: 'Institutional Session Fee',
+      costHa: 'Kudin Kula na Zangon Karatu',
+      highlightEn: 'Campus clinic consultation + tertiary emergency coverage',
+      highlightHa: 'Kula a asibitin makaranta da kulawar gaggawa a fadin jiha',
+      color: '#7c3aed',
+      badge: 'Higher Ed'
+    },
+    {
+      id: 'emergency',
+      titleEn: 'Emergency Trauma & Maternal Waiver',
+      titleHa: 'Asusun Gaggawa na Tiyata da Juna Biyu',
+      targetEn: 'Catastrophic emergencies & Obstetric C-sections',
+      targetHa: 'Hadurran gaggawa da tiyatar haihuwa ta C-Section',
+      costEn: '100% Sovereign Waiver (Zero Co-Pay)',
+      costHa: 'Kyauta 100% daga Hukumar ZAMCHEMA',
+      highlightEn: 'Zero out-of-pocket payment required at point-of-care',
+      highlightHa: 'Babu biyan ko kwabo a lokacin karbar magani ko tiyata',
+      color: '#e11d48',
+      badge: 'Zero Co-Pay'
+    },
+    {
+      id: 'diaspora',
+      titleEn: 'Diaspora Family Care Bonds',
+      titleHa: 'Asusun Kulawar Iyaye na Yan Kasashen Waje',
+      targetEn: 'Zamfara Indigenes in Diaspora (UK, US, Saudi Arabia)',
+      targetHa: 'Yan Zamfara mazauna kasashen waje',
+      costEn: 'Direct FX Healthcare Remittance Guarantee',
+      costHa: 'Daukar nauyin iyali da dangi a gida',
+      highlightEn: 'Direct blockchain & smart escrow health cover for relatives in Zamfara',
+      highlightHa: 'Daukar nauyin dangi kai tsaye don tabbatar da samun ingantacciyar lafiya',
+      color: '#0891b2',
+      badge: 'Diaspora FX'
     }
   ];
 
@@ -1289,12 +1389,50 @@ export default function App() {
           </button>
         </div>
 
+        {/* Live Operational Marquee Ticker */}
+        <div className="login-ticker-bar">
+          <div className="login-ticker-label">
+            <span className="live-pulse-dot"></span>
+            <span>{t.tickerLiveText || (lang === 'ha' ? 'HALIN AIKI A YANZU' : 'LIVE OPERATIONAL PULSE')}</span>
+          </div>
+          <div className="login-ticker-track">
+            <span className="login-ticker-item">
+              <strong>14 LGAs Active</strong> · 174 Accredited PHCs & 1 Specialist Hospital (FMC Gusau)
+            </span>
+            <span className="login-ticker-item">
+              <strong>BHCPF Solvency</strong> · ₦1.4B Equity Backing & Capitation Underwriting
+            </span>
+            <span className="login-ticker-item">
+              <strong>Capitation Protocol</strong> · 1st-of-Month Advance Release to All 14 LGAs
+            </span>
+            <span className="login-ticker-item">
+              <strong>Zero Maternal Out-of-Pocket</strong> · 100% C-Section & Emergency Obstetric Waivers
+            </span>
+            <span className="login-ticker-item">
+              <strong>Indigenous Voice AI</strong> · Dial 0800-ZAMCHEMA for Live Hausa Triage
+            </span>
+            <span className="login-ticker-item">
+              <strong>FHIR R4 Claims</strong> · Real-Time Fraud Sentinel Adjudication
+            </span>
+            {/* Duplicated track for continuous infinite smooth loop */}
+            <span className="login-ticker-item">
+              <strong>14 LGAs Active</strong> · 174 Accredited PHCs & 1 Specialist Hospital (FMC Gusau)
+            </span>
+            <span className="login-ticker-item">
+              <strong>BHCPF Solvency</strong> · ₦1.4B Equity Backing & Capitation Underwriting
+            </span>
+            <span className="login-ticker-item">
+              <strong>Capitation Protocol</strong> · 1st-of-Month Advance Release to All 14 LGAs
+            </span>
+          </div>
+        </div>
+
         <div className="login-card-container">
-          {/* Left Brand Showcase & Official Role Clearance Profiles */}
+          {/* Left Brand Showcase & Interactive Multi-Tab Information Deck */}
           <div className="login-left-brand">
             <div>
               {/* Sovereign State Crest & Brand Header */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.35rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.15rem' }}>
                 <div
                   className="state-emblem"
                   style={{
@@ -1308,7 +1446,7 @@ export default function App() {
                   ZH
                 </div>
                 <div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'white' }}>
+                  <div style={{ fontSize: '1.22rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'white' }}>
                     {t.agencyTitle}
                   </div>
                   <div style={{ fontSize: '0.78rem', color: '#fbbf24', fontWeight: 600 }}>
@@ -1318,67 +1456,249 @@ export default function App() {
               </div>
 
               {/* Operational Scope Banner */}
-              <div style={{ background: 'rgba(255, 255, 255, 0.08)', borderRadius: '14px', padding: '1rem 1.15rem', marginBottom: '1.5rem', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#34d399', fontWeight: 800, fontSize: '0.82rem', marginBottom: '0.35rem' }}>
+              <div style={{ background: 'rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '0.85rem 1rem', marginBottom: '1.15rem', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#34d399', fontWeight: 800, fontSize: '0.8rem', marginBottom: '0.25rem' }}>
                   <ShieldCheck size={16} />
                   <span>{lang === 'ha' ? 'Tsarin Inshorar Lafiya na Bai-Daya' : 'Sovereign Universal Healthcare Portal'}</span>
                 </div>
-                <p style={{ fontSize: '0.78rem', opacity: 0.9, lineHeight: 1.45, margin: 0 }}>
+                <p style={{ fontSize: '0.75rem', opacity: 0.9, lineHeight: 1.4, margin: 0 }}>
                   {lang === 'ha'
-                    ? 'Babban dandalin kula da inshorar lafiya a dukkan kananan hukumomi 14 na jihar Zamfara, tare da biyan kudin asibitocin karkara a kan kari da janye kudin tiyata ga mata masu juna biyu.'
-                    : 'Administering Universal Health Coverage across all 14 Zamfara LGAs with statutory 1st-of-month capitation, 100% maternal emergency waivers, and indigenous Hausa voice clinical triage.'}
+                    ? 'Babban dandalin kula da inshorar lafiya a dukkan kananan hukumomi 14 na jihar Zamfara, tare da biyan kudin asibitoci a kan kari da janye kudin tiyata ga mata masu juna biyu.'
+                    : 'Universal health coverage across all 14 Zamfara LGAs with statutory 1st-of-month capitation, 100% emergency C-section waivers, and indigenous Hausa voice AI clinical triage.'}
                 </p>
               </div>
 
-              {/* Official Clearance Profiles Selector (NO EXPOSED PASSWORDS) */}
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <Award size={14} />
-                    <span>{t.demoRolesTitle}</span>
-                  </div>
-                  <span style={{ fontSize: '0.68rem', color: '#a7f3d0', opacity: 0.85 }}>
-                    {lang === 'ha' ? 'Shaidun Aiki 5' : '5 Official Profiles'}
-                  </span>
-                </div>
+              {/* Multi-Tab Navigation Pills */}
+              <div className="login-tabs-nav">
+                <button
+                  type="button"
+                  className={`login-tab-pill ${loginInfoTab === 'portals' ? 'active' : ''}`}
+                  onClick={() => setLoginInfoTab('portals')}
+                >
+                  <Award size={13} />
+                  <span>{t.loginTabPortals || (lang === 'ha' ? 'Shaidun Aiki' : 'Officer Portals')}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`login-tab-pill ${loginInfoTab === 'schemes' ? 'active' : ''}`}
+                  onClick={() => setLoginInfoTab('schemes')}
+                >
+                  <Layers size={13} />
+                  <span>{t.loginTabSchemes || (lang === 'ha' ? 'Shirye-shiryen Lafiya (6)' : 'Health Plans (6)')}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`login-tab-pill ${loginInfoTab === 'lgas' ? 'active' : ''}`}
+                  onClick={() => setLoginInfoTab('lgas')}
+                >
+                  <MapPin size={13} />
+                  <span>{t.loginTabLgas || (lang === 'ha' ? 'Kananan Hukumomi 14' : '14 LGAs Network')}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`login-tab-pill ${loginInfoTab === 'emergency' ? 'active' : ''}`}
+                  onClick={() => setLoginInfoTab('emergency')}
+                >
+                  <PhoneCall size={13} />
+                  <span>{t.loginTabEmergency || (lang === 'ha' ? 'Gaggawa & USSD' : 'Emergency & USSD')}</span>
+                </button>
+              </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {demoRoles.map(dr => {
-                    const RoleIcon = dr.icon;
-                    return (
-                      <div
-                        key={dr.roleKey}
-                        className="demo-role-card"
-                        onClick={() => handleLogin(null, dr.identifier, dr.password)}
-                        title={`Authenticate session as ${dr.roleName}`}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                          <div style={{ width: 34, height: 34, borderRadius: '8px', background: `${dr.color}25`, border: `1px solid ${dr.color}60`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <RoleIcon size={16} color={dr.color} />
+              {/* Tab Content 1: Officer Clearance Portals */}
+              {loginInfoTab === 'portals' && (
+                <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Award size={13} />
+                      <span>{t.demoRolesTitle}</span>
+                    </div>
+                    <span style={{ fontSize: '0.68rem', color: '#a7f3d0', opacity: 0.85 }}>
+                      {lang === 'ha' ? 'Shaidun Aiki 5' : '5 Official Profiles'}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                    {demoRoles.map(dr => {
+                      const RoleIcon = dr.icon;
+                      return (
+                        <div
+                          key={dr.roleKey}
+                          className="demo-role-card"
+                          onClick={() => handleLogin(null, dr.identifier, dr.password)}
+                          title={`Authenticate session as ${dr.roleName}`}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <div style={{ width: 32, height: 32, borderRadius: '8px', background: `${dr.color}25`, border: `1px solid ${dr.color}60`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                              <RoleIcon size={15} color={dr.color} />
+                            </div>
+                            <div>
+                              <div style={{ fontWeight: 800, fontSize: '0.82rem', color: 'white' }}>
+                                {lang === 'ha' ? dr.roleTitleHa : dr.roleName}
+                              </div>
+                              <div style={{ fontSize: '0.7rem', opacity: 0.8 }}>
+                                {dr.name} · <span style={{ color: '#fbbf24', fontWeight: 700 }}>{dr.badge}</span>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <div style={{ fontWeight: 800, fontSize: '0.85rem', color: 'white' }}>
-                              {lang === 'ha' ? dr.roleTitleHa : dr.roleName}
-                            </div>
-                            <div style={{ fontSize: '0.72rem', opacity: 0.8 }}>
-                              {dr.name} · <span style={{ color: '#fbbf24', fontWeight: 700 }}>{dr.badge}</span>
-                            </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#34d399', fontWeight: 700, opacity: 0.9 }}>
+                              {lang === 'ha' ? 'Shiga' : 'Access'}
+                            </span>
+                            <ChevronRight size={14} color="#fbbf24" />
                           </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                          <span style={{ fontSize: '0.68rem', color: '#34d399', fontWeight: 700, opacity: 0.9 }}>
-                            {lang === 'ha' ? 'Shiga' : 'Access'}
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab Content 2: Multi-Tenant Health Schemes (6 Plans) */}
+              {loginInfoTab === 'schemes' && (
+                <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Layers size={13} />
+                      <span>{lang === 'ha' ? 'Shirye-shiryen Inshora 6' : '6 Accredited Health Plans'}</span>
+                    </div>
+                    <span style={{ fontSize: '0.68rem', color: '#a7f3d0', opacity: 0.85 }}>
+                      NHIA Accredited
+                    </span>
+                  </div>
+
+                  <div className="login-schemes-grid">
+                    {ZAMCHEMA_SCHEMES.map(scheme => (
+                      <div key={scheme.id} className="login-scheme-card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.25rem' }}>
+                          <span style={{ fontWeight: 800, fontSize: '0.78rem', color: '#ffffff' }}>
+                            {lang === 'ha' ? scheme.titleHa : scheme.titleEn}
                           </span>
-                          <ChevronRight size={15} color="#fbbf24" />
+                          <span className="login-scheme-badge" style={{ background: `${scheme.color}35`, color: '#fef08a', border: `1px solid ${scheme.color}60` }}>
+                            {scheme.badge}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#34d399', fontWeight: 700, marginBottom: '0.15rem' }}>
+                          {lang === 'ha' ? scheme.costHa : scheme.costEn}
+                        </div>
+                        <div style={{ fontSize: '0.67rem', color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.35 }}>
+                          {lang === 'ha' ? scheme.highlightHa : scheme.highlightEn}
                         </div>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
+              )}
+
+              {/* Tab Content 3: 14 LGAs Network Matrix */}
+              {loginInfoTab === 'lgas' && (
+                <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <MapPin size={13} />
+                      <span>{lang === 'ha' ? 'Kananan Hukumomin Jihar Zamfara' : 'Zamfara Statewide Network'}</span>
+                    </div>
+                    <span style={{ fontSize: '0.68rem', color: '#a7f3d0', opacity: 0.85 }}>
+                      14 LGAs · 174 PHCs
+                    </span>
+                  </div>
+
+                  <div className="login-lgas-grid">
+                    {ZAMFARA_LGAS.map(lga => (
+                      <div key={lga.name} className="login-lga-pill">
+                        <div>
+                          <span className="lga-name">{lga.name}</span>
+                          <span className="lga-hospital">{lga.hospital}</span>
+                        </div>
+                        <span className="lga-phc-count">{lga.phcs} PHCs</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab Content 4: 24/7 Emergency & USSD Micro-Savings */}
+              {loginInfoTab === 'emergency' && (
+                <div style={{ animation: 'tabFadeIn 0.3s ease-out' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.74rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <PhoneCall size={13} />
+                      <span>{lang === 'ha' ? 'Hanyoyin Sadarwa na Gaggawa' : 'Emergency & USSD Channels'}</span>
+                    </div>
+                    <span style={{ fontSize: '0.68rem', color: '#a7f3d0', opacity: 0.85 }}>
+                      24/7 Dispatch
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                    <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.35)', borderRadius: '10px', padding: '0.75rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#fca5a5', fontWeight: 800, fontSize: '0.78rem', marginBottom: '0.2rem' }}>
+                        <PhoneCall size={14} color="#f87171" />
+                        <span>0800-ZAMCHEMA (Toll-Free 24/7)</span>
+                      </div>
+                      <div style={{ fontSize: '0.69rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.35 }}>
+                        {lang === 'ha'
+                          ? 'Kira kyauta don neman motar daukar marasa lafiya, tiyata ta gaggawa, ko bayanin asibitin kusa.'
+                          : 'Toll-free hotline for emergency ambulance dispatch, maternal C-section waivers, or hospital navigation.'}
+                      </div>
+                    </div>
+
+                    <div style={{ background: 'rgba(59, 130, 246, 0.15)', border: '1px solid rgba(59, 130, 246, 0.35)', borderRadius: '10px', padding: '0.75rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#93c5fd', fontWeight: 800, fontSize: '0.78rem', marginBottom: '0.2rem' }}>
+                        <Zap size={14} color="#60a5fa" />
+                        <span>USSD *966# Informal Micro-Savings</span>
+                      </div>
+                      <div style={{ fontSize: '0.69rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.35 }}>
+                        {lang === 'ha'
+                          ? 'Danna *966# a kowace waya don duba inshora, adana kudin magani (₦200-₦1,000), da samun katin waya.'
+                          : 'Dial *966# on any GSM phone to verify eligibility, deposit wallet savings, and unlock prevention airtime vouchers.'}
+                      </div>
+                    </div>
+
+                    <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.35)', borderRadius: '10px', padding: '0.75rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#6ee7b7', fontWeight: 800, fontSize: '0.78rem', marginBottom: '0.2rem' }}>
+                        <Mic size={14} color="#34d399" />
+                        <span>Indigenous Hausa Voice AI Triage</span>
+                      </div>
+                      <div style={{ fontSize: '0.69rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.35 }}>
+                        {lang === 'ha'
+                          ? 'Tattaunawa da na’urar AI cikin harshen Hausa don gano cuta da jagorantar mara lafiya.'
+                          : 'Speak naturally in Hausa to receive instant symptom assessment and clinic guidance.'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom Quick Actions Bar */}
+              <div className="login-quick-actions-bar">
+                <button
+                  type="button"
+                  className="login-quick-btn"
+                  onClick={() => setLoginModal('lgaMap')}
+                >
+                  <MapPin size={12} color="#34d399" />
+                  <span>{t.btnExploreLgas || (lang === 'ha' ? 'Taswirar LGAs 14' : '14 LGAs Network')}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-quick-btn"
+                  onClick={() => setLoginModal('emergencyHelp')}
+                >
+                  <PhoneCall size={12} color="#f87171" />
+                  <span>{t.btnEmergencyHelp || (lang === 'ha' ? 'Layin Gaggawa' : 'Emergency Hotline')}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-quick-btn"
+                  onClick={() => setLoginModal('ninGuide')}
+                >
+                  <ShieldCheck size={12} color="#fbbf24" />
+                  <span>{t.btnNinHelp || (lang === 'ha' ? 'Neman Lambar NIN' : 'NIN Self-Service')}</span>
+                </button>
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.15)', paddingTop: '1rem', marginTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.73rem', opacity: 0.85 }}>
+            <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.15)', paddingTop: '0.85rem', marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', opacity: 0.85 }}>
               <div>Zamfara State Healthcare Portal</div>
               <div>NHIA Act 2022 Compliant 🇳🇬</div>
             </div>
@@ -1386,15 +1706,15 @@ export default function App() {
 
           {/* Right Credentials Sign-in Box - NO HARDCODED CREDENTIALS EXPOSED */}
           <div className="login-right-form">
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#065f46', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 800, marginBottom: '0.65rem' }}>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#065f46', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 800, marginBottom: '0.5rem' }}>
                 <ShieldCheck size={13} />
                 <span>{lang === 'ha' ? 'Hanyar Shiga ta Musamman' : 'Official Gateway Access'}</span>
               </div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
+              <h2 style={{ fontSize: '1.45rem', fontWeight: 900, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
                 {t.loginTitle}
               </h2>
-              <p style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '0.3rem', marginBottom: 0 }}>
+              <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem', marginBottom: 0 }}>
                 {t.loginSub}
               </p>
             </div>
@@ -1462,7 +1782,7 @@ export default function App() {
                   />
                   <span>{t.rememberMeLabel}</span>
                 </label>
-                <span style={{ color: '#059669', fontWeight: 700, cursor: 'pointer' }} onClick={() => showToast(lang === 'ha' ? 'Tuntubi sashen IT na ZAMCHEMA: 0800-ZAMCHEMA' : 'Contact ZAMCHEMA IT Helpdesk: 0800-ZAMCHEMA', 'info')}>
+                <span style={{ color: '#059669', fontWeight: 700, cursor: 'pointer' }} onClick={() => setLoginModal('emergencyHelp')}>
                   {t.helpSupport}
                 </span>
               </div>
@@ -1495,12 +1815,17 @@ export default function App() {
             </form>
 
             {/* Citizen NIN Info Card (CLEAN, NO EXPOSED PASSWORDS) */}
-            <div className="citizen-nin-card">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.25rem' }}>
-                <span style={{ fontSize: '0.95rem' }}>🇳🇬</span>
-                <span>{t.citizenNinHeader}</span>
+            <div className="citizen-nin-card" style={{ cursor: 'pointer' }} onClick={() => setLoginModal('ninGuide')}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', fontWeight: 800, color: '#0f172a' }}>
+                  <span style={{ fontSize: '0.95rem' }}>🇳🇬</span>
+                  <span>{t.citizenNinHeader}</span>
+                </div>
+                <span style={{ fontSize: '0.68rem', color: '#059669', fontWeight: 700 }}>
+                  {lang === 'ha' ? 'Koyi Yadda Ake Yi →' : 'Learn How →'}
+                </span>
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.45 }}>
+              <div style={{ fontSize: '0.73rem', color: '#64748b', lineHeight: 1.4 }}>
                 {t.citizenNinDesc}
               </div>
             </div>
@@ -1518,6 +1843,415 @@ export default function App() {
             </div>
           </div>
         </div>
+
+        {/* Sovereign Multi-Column Institutional Footer */}
+        <footer className="login-page-footer">
+          <div className="login-footer-grid">
+            {/* Col 1: Agency Brand & Mandate */}
+            <div className="login-footer-col">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.85rem' }}>
+                <div className="state-emblem" style={{ width: 36, height: 36, fontSize: '0.95rem' }}>
+                  ZH
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.95rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
+                    {t.agencyTitle}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#fbbf24', fontWeight: 600 }}>
+                    ZAMCHEMA · State Headquarters, Gusau
+                  </div>
+                </div>
+              </div>
+              <p className="login-footer-text">
+                {t.footerAgencyMandate}
+              </p>
+              <div className="login-compliance-tags">
+                <span className="login-compliance-tag">
+                  <ShieldCheck size={11} />
+                  <span>NHIA Act 2022</span>
+                </span>
+                <span className="login-compliance-tag">
+                  <Lock size={11} />
+                  <span>NDPA 2023</span>
+                </span>
+                <span className="login-compliance-tag">
+                  <Code2 size={11} />
+                  <span>HL7® FHIR® R4</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Col 2: Emergency & Critical Care */}
+            <div className="login-footer-col">
+              <div className="login-footer-heading">
+                <PhoneCall size={14} color="#f87171" />
+                <span>{t.footerEmergencyTitle}</span>
+              </div>
+              <div className="login-footer-links-list">
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('emergencyHelp')}
+                  style={{ fontWeight: 800, color: '#fca5a5' }}
+                >
+                  <PhoneCall size={13} color="#f87171" />
+                  <span>{t.footerTollFree}</span>
+                </button>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.65)', marginBottom: '0.35rem' }}>
+                  {t.footerEmergencySub}
+                </div>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('emergencyHelp')}
+                >
+                  <Building2 size={13} color="#60a5fa" />
+                  <span>{t.footerFmcGusau}</span>
+                </button>
+                <div className="login-footer-link" style={{ cursor: 'default' }}>
+                  <Zap size={13} color="#fbbf24" />
+                  <span>{t.footerUssdChannel}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Col 3: Citizen Services & Direct Links */}
+            <div className="login-footer-col">
+              <div className="login-footer-heading">
+                <Layers size={14} color="#34d399" />
+                <span>{t.footerQuickLinksTitle}</span>
+              </div>
+              <div className="login-footer-links-list">
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('lgaMap')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerLgaNetworkLink}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('ninGuide')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerNinVerifyLink}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginInfoTab('schemes')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerSchemesLink}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => showToast(lang === 'ha' ? 'Nemi tallafin riga-kafi a kowace cibiyar PHC mai aiki' : 'Claim prevention nutrition voucher at your designated PHC center', 'info')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerRewardsLink}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Col 4: Governance & Legal Standards */}
+            <div className="login-footer-col">
+              <div className="login-footer-heading">
+                <Landmark size={14} color="#a7f3d0" />
+                <span>{t.footerGovernanceTitle}</span>
+              </div>
+              <p className="login-footer-text" style={{ marginBottom: '0.45rem' }}>
+                <MapPin size={12} style={{ display: 'inline', marginRight: 4, verticalAlign: 'text-bottom' }} />
+                <span>{t.footerHqAddress}</span>
+              </p>
+              <div style={{ fontSize: '0.72rem', color: '#fbbf24', fontWeight: 700, marginBottom: '0.35rem' }}>
+                {t.footerLawCompliance}
+              </div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
+                {t.footerDataProtection}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.65rem', fontSize: '0.7rem', color: '#34d399' }}>
+                <span className="live-pulse-dot" style={{ width: 6, height: 6 }}></span>
+                <span>{t.footerUptimeSla}</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+        {/* Sub-Footer Legal & Sovereign Row */}
+        <div className="login-page-subfooter">
+          <div>{t.footerCopyright}</div>
+          <div className="login-subfooter-links">
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => showToast(lang === 'ha' ? 'Kariyar Bayanan Sirri: An kiyaye daidai da dokar NDPA 2023 ta Najeriya' : 'Data Privacy: Certified compliant under Nigeria Data Protection Act (NDPA) 2023', 'info')}
+            >
+              {t.footerPrivacy}
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => showToast(lang === 'ha' ? 'Ka\'idojin Shiga: Wannan tsarin gwamnati ne don ma\'aikata da al\'ummar Zamfara' : 'Terms of Access: Authorized portal for Zamfara healthcare stakeholders and citizens', 'info')}
+            >
+              {t.footerTerms}
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => showToast(lang === 'ha' ? 'Hakkokin Mara Lafiya: Samun magani da kulawa ba tare da tsangwama ko biyan kudi ba ga masu shirin BHCPF' : 'Citizen Charter: Guaranteeing dignified, fee-waived care for all vulnerable enrollees', 'info')}
+            >
+              {t.footerCharter}
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => setLoginModal('emergencyHelp')}
+              style={{ color: '#fca5a5' }}
+            >
+              {t.footerWhistleblower}
+            </button>
+          </div>
+          <div style={{ color: '#fbbf24', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <span>{t.footerSovereignty}</span>
+          </div>
+        </div>
+
+        {/* Modal 1: 14 LGAs Operational Healthcare Network */}
+        {loginModal === 'lgaMap' && (
+          <div className="modal-overlay" onClick={() => setLoginModal(null)}>
+            <div className="modal-content" style={{ maxWidth: '780px', width: '92%' }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+                <div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#ecfdf5', color: '#065f46', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 800, marginBottom: '0.4rem' }}>
+                    <MapPin size={13} />
+                    <span>{lang === 'ha' ? 'Cibiyoyin Kula da Lafiya a Jiha' : 'Statewide Healthcare Coverage Matrix'}</span>
+                  </div>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>
+                    {lang === 'ha' ? 'Kananan Hukumomi 14 na Jihar Zamfara' : '14 Local Government Areas of Zamfara State'}
+                  </h3>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem', margin: 0 }}>
+                    {lang === 'ha'
+                      ? 'Dukkan kananan hukumomin jihar Zamfara suna da cibiyoyin kiwon lafiya na farko (PHCs) da asibitin kwararru don karbar majinyata.'
+                      : 'Comprehensive coverage across all 14 LGAs with accredited primary healthcare centers and referral hospitals.'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLoginModal(null)}
+                  style={{ background: '#f1f5f9', border: 'none', borderRadius: '9999px', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  <X size={16} color="#64748b" />
+                </button>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem', maxHeight: '55vh', overflowY: 'auto', paddingRight: '0.25rem' }}>
+                {ZAMFARA_LGAS.map((lga, idx) => (
+                  <div key={lga.name} style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '0.85rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                      <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#0f172a' }}>
+                        {idx + 1}. {lga.name}
+                      </span>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 700, background: '#e0f2fe', color: '#0369a1', padding: '0.15rem 0.5rem', borderRadius: '6px' }}>
+                        {lga.phcs} PHCs
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 700, marginBottom: '0.2rem' }}>
+                      {lga.type}
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                      <strong>Referral:</strong> {lga.hospital}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '1.25rem', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                  Total: <strong>14 LGAs · 174 Accredited Primary Health Centres</strong>
+                </span>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => setLoginModal(null)}
+                  style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem', borderRadius: '10px' }}
+                >
+                  {lang === 'ha' ? 'Rufe' : 'Close Matrix'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal 2: 24/7 Emergency Dispatch & Hotline */}
+        {loginModal === 'emergencyHelp' && (
+          <div className="modal-overlay" onClick={() => setLoginModal(null)}>
+            <div className="modal-content" style={{ maxWidth: '640px', width: '92%' }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+                <div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#fee2e2', color: '#991b1b', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 800, marginBottom: '0.4rem' }}>
+                    <PhoneCall size={13} />
+                    <span>{lang === 'ha' ? 'Layin Taimako na Gaggawa' : 'Emergency & Rapid Response Helpdesk'}</span>
+                  </div>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>
+                    {lang === 'ha' ? 'Taimakon Gaggawa na ZAMCHEMA 24/7' : 'ZAMCHEMA 24/7 Emergency Assistance'}
+                  </h3>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem', margin: 0 }}>
+                    {lang === 'ha'
+                      ? 'Layin kira kyauta da lambobin sadarwa na gaggawa ga dukkan al\'ummar jihar Zamfara.'
+                      : 'Toll-free hotlines, maternal emergency escalations, and technical IT support.'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLoginModal(null)}
+                  style={{ background: '#f1f5f9', border: 'none', borderRadius: '9999px', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  <X size={16} color="#64748b" />
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '12px', padding: '1rem', display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+                  <div style={{ width: 40, height: 40, borderRadius: '10px', background: '#ef4444', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <PhoneCall size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: '1rem', color: '#991b1b' }}>
+                      0800-ZAMCHEMA (Toll-Free 24/7)
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#4b5563', marginTop: '0.15rem' }}>
+                      {lang === 'ha'
+                        ? 'Kira kyauta daga kowace layin salula (MTN, Airtel, Glo, 9mobile) don gaggawar tiyata, hadari, ko motar asibiti.'
+                        : 'Free toll-free call from any mobile network for trauma dispatch, emergency C-section waivers, or hospital verification.'}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '1rem', display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+                  <div style={{ width: 40, height: 40, borderRadius: '10px', background: '#2563eb', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Building2 size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#1e40af' }}>
+                      Federal Medical Centre (FMC) Gusau Emergency Trauma Desk
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#4b5563', marginTop: '0.15rem' }}>
+                      Hotline: <strong>+234 803 554 4112</strong> · Direct Tertiary Referral Adjudication Unit
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '12px', padding: '1rem', display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+                  <div style={{ width: 40, height: 40, borderRadius: '10px', background: '#059669', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Zap size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#065f46' }}>
+                      USSD Offline Service: *966#
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#4b5563', marginTop: '0.15rem' }}>
+                      {lang === 'ha'
+                        ? 'Danna *966# a kowace karamar waya ba tare da bukatar data ko intanet ba.'
+                        : 'Dial *966# on any basic phone without internet or smartphone requirement.'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '1.25rem', paddingTop: '0.85rem', textAlign: 'right' }}>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => setLoginModal(null)}
+                  style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem', borderRadius: '10px' }}
+                >
+                  {lang === 'ha' ? 'An Fahimta' : 'Understood'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal 3: Citizen NIN Self-Service Guide */}
+        {loginModal === 'ninGuide' && (
+          <div className="modal-overlay" onClick={() => setLoginModal(null)}>
+            <div className="modal-content" style={{ maxWidth: '640px', width: '92%' }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+                <div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#fef3c7', color: '#92400e', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 800, marginBottom: '0.4rem' }}>
+                    <ShieldCheck size={13} />
+                    <span>{lang === 'ha' ? 'Hanyar Rijista da Duba Shaidar NIN' : 'Citizen NIN Verification Guide'}</span>
+                  </div>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>
+                    {lang === 'ha' ? 'Yadda Zaka Shiga da Lambar NIN (11)' : 'How to Access Portal with 11-digit NIN'}
+                  </h3>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.25rem', margin: 0 }}>
+                    {lang === 'ha'
+                      ? 'Dukkan dan jihar Zamfara mai lambar NIN yana da damar duba matsayin inshorar lafiyarsa.'
+                      : 'All citizens in Zamfara can check their health cover, wallet balance, and benefits with their National Identification Number.'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLoginModal(null)}
+                  style={{ background: '#f1f5f9', border: 'none', borderRadius: '9999px', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  <X size={16} color="#64748b" />
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', background: '#f8fafc', padding: '0.85rem', borderRadius: '10px' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#059669', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                    1
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#334155' }}>
+                    <strong>{lang === 'ha' ? 'Shigar da Lambar NIN:' : 'Enter 11-Digit NIN:'}</strong> {lang === 'ha' ? 'Sanya lambar NIN din ku mai lambobi 11 a akwatin farko.' : 'Type your 11-digit National Identity Number into the identifier box.'}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', background: '#f8fafc', padding: '0.85rem', borderRadius: '10px' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#059669', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                    2
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#334155' }}>
+                    <strong>{lang === 'ha' ? 'Kalmar Sirri ta Farko:' : 'Security Clearance Password:'}</strong> {lang === 'ha' ? 'Yi amfani da kalmar sirrinku ko danna alamar "Mai Cin Gajiya (Mai Lambar NIN)" a gefen hagu don shiga kai tsaye.' : 'Use your security password, or click the "Enrolled Citizen (NIN)" profile on the left for direct access.'}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', background: '#f8fafc', padding: '0.85rem', borderRadius: '10px' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#059669', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>
+                    3
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#334155' }}>
+                    <strong>{lang === 'ha' ? 'Hanyar USSD *966#:' : 'Alternative USSD *966#:'}</strong> {lang === 'ha' ? 'Idan ba ka da wayar intanet, danna *966# daga lambar wayarka mai rajista don duba matsayin inshora nan take.' : 'If you do not have internet access, dial *966# from your registered phone to verify insurance eligibility instantly.'}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid #e2e8f0', marginTop: '1.25rem', paddingTop: '0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                  ZAMCHEMA Citizen Protection Unit
+                </span>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => setLoginModal(null)}
+                  style={{ padding: '0.5rem 1.25rem', fontSize: '0.85rem', borderRadius: '10px' }}
+                >
+                  {lang === 'ha' ? 'An Fahimta' : 'Got it'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
