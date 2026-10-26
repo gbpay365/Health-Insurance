@@ -892,6 +892,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    document.title = 'Z-HMS';
     loadAll();
   }, []);
 
