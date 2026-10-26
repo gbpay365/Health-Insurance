@@ -1844,6 +1844,185 @@ export default function App() {
           </div>
         </div>
 
+        {/* Sovereign Multi-Column Institutional Footer */}
+        <footer className="login-page-footer">
+          <div className="login-footer-grid">
+            {/* Col 1: Agency Brand & Mandate */}
+            <div className="login-footer-col">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.85rem' }}>
+                <div className="state-emblem" style={{ width: 36, height: 36, fontSize: '0.95rem' }}>
+                  ZH
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.95rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
+                    {t.agencyTitle}
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#fbbf24', fontWeight: 600 }}>
+                    ZAMCHEMA · State Headquarters, Gusau
+                  </div>
+                </div>
+              </div>
+              <p className="login-footer-text">
+                {t.footerAgencyMandate}
+              </p>
+              <div className="login-compliance-tags">
+                <span className="login-compliance-tag">
+                  <ShieldCheck size={11} />
+                  <span>NHIA Act 2022</span>
+                </span>
+                <span className="login-compliance-tag">
+                  <Lock size={11} />
+                  <span>NDPA 2023</span>
+                </span>
+                <span className="login-compliance-tag">
+                  <Code2 size={11} />
+                  <span>HL7® FHIR® R4</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Col 2: Emergency & Critical Care */}
+            <div className="login-footer-col">
+              <div className="login-footer-heading">
+                <PhoneCall size={14} color="#f87171" />
+                <span>{t.footerEmergencyTitle}</span>
+              </div>
+              <div className="login-footer-links-list">
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('emergencyHelp')}
+                  style={{ fontWeight: 800, color: '#fca5a5' }}
+                >
+                  <PhoneCall size={13} color="#f87171" />
+                  <span>{t.footerTollFree}</span>
+                </button>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.65)', marginBottom: '0.35rem' }}>
+                  {t.footerEmergencySub}
+                </div>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('emergencyHelp')}
+                >
+                  <Building2 size={13} color="#60a5fa" />
+                  <span>{t.footerFmcGusau}</span>
+                </button>
+                <div className="login-footer-link" style={{ cursor: 'default' }}>
+                  <Zap size={13} color="#fbbf24" />
+                  <span>{t.footerUssdChannel}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Col 3: Citizen Services & Direct Links */}
+            <div className="login-footer-col">
+              <div className="login-footer-heading">
+                <Layers size={14} color="#34d399" />
+                <span>{t.footerQuickLinksTitle}</span>
+              </div>
+              <div className="login-footer-links-list">
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('lgaMap')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerLgaNetworkLink}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginModal('ninGuide')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerNinVerifyLink}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => setLoginInfoTab('schemes')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerSchemesLink}</span>
+                </button>
+                <button
+                  type="button"
+                  className="login-footer-link"
+                  onClick={() => showToast(lang === 'ha' ? 'Nemi tallafin riga-kafi a kowace cibiyar PHC mai aiki' : 'Claim prevention nutrition voucher at your designated PHC center', 'info')}
+                >
+                  <ChevronRight size={13} color="#34d399" />
+                  <span>{t.footerRewardsLink}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Col 4: Governance & Legal Standards */}
+            <div className="login-footer-col">
+              <div className="login-footer-heading">
+                <Landmark size={14} color="#a7f3d0" />
+                <span>{t.footerGovernanceTitle}</span>
+              </div>
+              <p className="login-footer-text" style={{ marginBottom: '0.45rem' }}>
+                <MapPin size={12} style={{ display: 'inline', marginRight: 4, verticalAlign: 'text-bottom' }} />
+                <span>{t.footerHqAddress}</span>
+              </p>
+              <div style={{ fontSize: '0.72rem', color: '#fbbf24', fontWeight: 700, marginBottom: '0.35rem' }}>
+                {t.footerLawCompliance}
+              </div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
+                {t.footerDataProtection}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.65rem', fontSize: '0.7rem', color: '#34d399' }}>
+                <span className="live-pulse-dot" style={{ width: 6, height: 6 }}></span>
+                <span>{t.footerUptimeSla}</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+        {/* Sub-Footer Legal & Sovereign Row */}
+        <div className="login-page-subfooter">
+          <div>{t.footerCopyright}</div>
+          <div className="login-subfooter-links">
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => showToast(lang === 'ha' ? 'Kariyar Bayanan Sirri: An kiyaye daidai da dokar NDPA 2023 ta Najeriya' : 'Data Privacy: Certified compliant under Nigeria Data Protection Act (NDPA) 2023', 'info')}
+            >
+              {t.footerPrivacy}
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => showToast(lang === 'ha' ? 'Ka\'idojin Shiga: Wannan tsarin gwamnati ne don ma\'aikata da al\'ummar Zamfara' : 'Terms of Access: Authorized portal for Zamfara healthcare stakeholders and citizens', 'info')}
+            >
+              {t.footerTerms}
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => showToast(lang === 'ha' ? 'Hakkokin Mara Lafiya: Samun magani da kulawa ba tare da tsangwama ko biyan kudi ba ga masu shirin BHCPF' : 'Citizen Charter: Guaranteeing dignified, fee-waived care for all vulnerable enrollees', 'info')}
+            >
+              {t.footerCharter}
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              className="login-subfooter-link"
+              onClick={() => setLoginModal('emergencyHelp')}
+              style={{ color: '#fca5a5' }}
+            >
+              {t.footerWhistleblower}
+            </button>
+          </div>
+          <div style={{ color: '#fbbf24', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <span>{t.footerSovereignty}</span>
+          </div>
+        </div>
+
         {/* Modal 1: 14 LGAs Operational Healthcare Network */}
         {loginModal === 'lgaMap' && (
           <div className="modal-overlay" onClick={() => setLoginModal(null)}>

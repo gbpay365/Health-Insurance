@@ -198,7 +198,31 @@ export const translations = {
     switchRoleSub: "One-click credential simulation matching executive, clinical, audit, field, and citizen scopes",
     activeRoleNotice: "Active Credential Session",
     roleRestrictedNotice: "Access Restricted by Role Clearance",
-    roleRestrictedNoticeSub: "Your current credential does not have clearance for this operational terminal. Please switch to an authorized clearance profile or contact ZAMCHEMA HQ."
+    roleRestrictedNoticeSub: "Your current credential does not have clearance for this operational terminal. Please switch to an authorized clearance profile or contact ZAMCHEMA HQ.",
+
+    // Login Page Sovereign Footer
+    footerAgencyMandate: "Statutory state agency administering universal, equitable, and quality contributory healthcare coverage across all 14 Local Government Areas of Zamfara State.",
+    footerEmergencyTitle: "Emergency & Critical Channels",
+    footerTollFree: "0800-ZAMCHEMA (0800-926-24362)",
+    footerEmergencySub: "24/7 Toll-free trauma & maternal dispatch",
+    footerFmcGusau: "FMC Gusau Tertiary Trauma: +234 803 554 4112",
+    footerUssdChannel: "USSD *966# Offline Onboarding (All Networks)",
+    footerQuickLinksTitle: "Citizen Services & Portals",
+    footerLgaNetworkLink: "14 LGAs Primary Clinic Directory",
+    footerNinVerifyLink: "NIN Self-Service & Eligibility",
+    footerSchemesLink: "6 Accredited Health Plans",
+    footerRewardsLink: "Prevention Nutrition Vouchers",
+    footerGovernanceTitle: "Governance & Statutory Standards",
+    footerHqAddress: "ZAMCHEMA Complex, J.B. Yakubu Secretariat, Gusau, Zamfara State",
+    footerLawCompliance: "Zamfara State Healthcare Law No. 7 & NHIA Act 2022",
+    footerDataProtection: "NDPA 2023 Certified · HL7® FHIR® R4 Interoperable",
+    footerUptimeSla: "System Availability: 99.98% High Availability Sovereign SLA",
+    footerCopyright: "© 2026 Zamfara State Contributory Healthcare Management Agency (ZAMCHEMA). All Rights Reserved.",
+    footerPrivacy: "Privacy Policy",
+    footerTerms: "Terms of Access",
+    footerCharter: "Citizen Rights Charter",
+    footerWhistleblower: "Whistleblower Fraud Hotline",
+    footerSovereignty: "Government of Zamfara State · Federal Republic of Nigeria 🇳🇬"
   },
   ha: {
     // Top Bar & Auth
@@ -398,6 +422,30 @@ export const translations = {
     switchRoleSub: "Shiga ta ko wanne matsayi don gwada aikin shugabanci, likita, binciken kudi, jami'an gari, ko dan kasa",
     activeRoleNotice: "Shaidar da ke Aiki a Yanzu",
     roleRestrictedNotice: "An Hana Shiga Wannan Bangaren Saboda Matsayin Aiki",
-    roleRestrictedNoticeSub: "Matsayin shaidarku bai ba ku damar duba wannan bangaren ba. Tuntubi hedkwatar ZAMCHEMA ko kuma ku shiga da shaidar da ke da izini."
+    roleRestrictedNoticeSub: "Matsayin shaidarku bai ba ku damar duba wannan bangaren ba. Tuntubi hedkwatar ZAMCHEMA ko kuma ku shiga da shaidar da ke da izini.",
+
+    // Login Page Sovereign Footer (Hausa)
+    footerAgencyMandate: "Hukumar gwamnati mai kula da bayar da inshorar lafiya mai inganci da adalci ga dukkan al'ummar kananan hukumomi 14 na jihar Zamfara.",
+    footerEmergencyTitle: "Layin Sadarwa na Gaggawa",
+    footerTollFree: "0800-ZAMCHEMA (Kira Kyauta 24/7)",
+    footerEmergencySub: "Kira kyauta don motar asibiti da tiyatar haihuwa",
+    footerFmcGusau: "Babban Asibitin FMC Gusau: +234 803 554 4112",
+    footerUssdChannel: "USSD *966# a kowace waya ba tare da data ba",
+    footerQuickLinksTitle: "Ayyukan Masu Cin Gajiya",
+    footerLgaNetworkLink: "Jerin Asibitocin Kananan Hukumomi 14",
+    footerNinVerifyLink: "Duba Shaidar NIN & Magani",
+    footerSchemesLink: "Shirye-shiryen Inshora guda 6",
+    footerRewardsLink: "Kudaden Tallafin Rigakafi & Katin Waya",
+    footerGovernanceTitle: "Doka da Ka'idojin Aiki",
+    footerHqAddress: "Hedkwatar ZAMCHEMA, Sakatariyar J.B. Yakubu, Gusau, Jihar Zamfara",
+    footerLawCompliance: "Dokar Kiwon Lafiya ta Jihar Zamfara Lamba 7 & Dokar NHIA 2022",
+    footerDataProtection: "Kariyar Bayanai ta NDPA 2023 · HL7® FHIR® R4",
+    footerUptimeSla: "Ingancin Na'ura: 99.98% Kula Ba Dare Ba Rana",
+    footerCopyright: "© 2026 Hukumar Kula da Inshorar Lafiya ta Jihar Zamfara (ZAMCHEMA). Dukkan Hakkoki A Kare.",
+    footerPrivacy: "Kariyar Bayanan Sirri",
+    footerTerms: "Ka'idojin Amfani",
+    footerCharter: "Yarjejeniyar Hakkokin Mara Lafiya",
+    footerWhistleblower: "Hanyar Kai Karar Barna da Rashawa",
+    footerSovereignty: "Gwamnatin Jihar Zamfara · Jamhuriyar Tarayyar Najeriya 🇳🇬"
   }
 };
